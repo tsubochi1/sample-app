@@ -1,0 +1,36 @@
+<%#
+<h1>Tasks#index</h1>
+<p>Find me in app/views/tasks/index.html.erb</p>
+%>
+
+
+<%= provide(:title, "Task index") %>
+<h1>タスク一覧</h1>
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <a class="btn btn-lg btn-primary pull-right" href="tasks/new">タスク新規作成</a>
+    <table class="table table-hover" id="table-tasks">
+      <thead>
+        <tr>
+          <th>名称</th>
+          <th>作成日</th>
+          <th></th>
+        </tr>
+      </thead>
+      <% @tasks.each do |task| %>
+      <tbody>
+        <tr>
+          <td>
+            <%= task.name %>
+          </td>
+          <td></td>
+          <td>
+            <a class="btn btn-success">編集</a>
+            <a class="btn btn-danger">削除</a>
+          </td>
+        </tr>
+      </tbody>
+      <% end %>
+    </table>
+  </div>
+</div>
