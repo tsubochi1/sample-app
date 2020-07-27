@@ -4,6 +4,7 @@
 
   <div class="row">
     <%= form_with( model: @task, url: user_task_path(@user), local: true, method: :patch) do |f| %>
+     <%= render 'shared/error_messages_task' %>
         
       <%= f.label :name, class: "label-form" %>
       <%= f.text_field :name, class: "form-control" %>
