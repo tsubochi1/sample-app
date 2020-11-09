@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy]
-  before_action :correct_user, only: [:show, :edit, :update]
-  before_action :admin_user, only: :destroy
+  before_action :admin_user, only: [:index, :destroy]
+  before_action :correct_user, only: [:edit, :update]
+  
   
   def index
     @users = User.paginate(page: params[:page], per_page: 20)
@@ -13,12 +14,17 @@ class UsersController < ApplicationController
   end
   
   def new
+    if logged_in? && !current_user.admin?
+      flash[:info] = "すでにログインしています。"
+      redirect_to current_user
+    end
     @user = User.new
   end
   
   def create
     @user = User.new(user_params)
     if @user.save
+      log_in @user
       flash[:success] = '新規作成に成功しました。'
       redirect_to @user
     else
@@ -60,7 +66,6 @@ class UsersController < ApplicationController
     #ログイン済のユーザーか確認します。
     def logged_in_user
       unless logged_in?
-        store_location
         flash[:danger] = "ログインしてください。"
         redirect_to login_url
       end
